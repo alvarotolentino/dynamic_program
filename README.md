@@ -1,6 +1,6 @@
 ### Example of dynamic programming
 
-Here some examples of dynamic programming.
+The following are some algorithms that implement the dynamic programming technique.
 
 * bestsum.rs: Given an array of numbers and a target sum, return the shortest combination of numbers that add up to exactly the target sum.
 
