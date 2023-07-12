@@ -1,31 +1,25 @@
 use std::collections::HashMap;
 
-pub fn count_construct(
-    target: &str,
-    word_bank: &Vec<&str>,
-    cache: &mut HashMap<String, i32>,
-) -> i32 {
+use crate::memoize::memoize;
+
+/**
+ * Returns the number of ways the target can be generated from the words in the word_bank.
+ */
+pub fn count_construct<'a>(cache: &mut HashMap<&'a str, i32>, target: &'a str, word_bank: &Vec<&'a str>) -> i32 {
     if target.is_empty() {
         return 1;
     }
 
     let mut total_count = 0;
 
-    match cache.get(target) {
-        Some(x) => *x,
-        None => {
-            for word in word_bank.iter() {
-                if target.starts_with(word) {
-                    let remainder = &target[word.len()..target.len()];
-                    let result = count_construct(remainder, word_bank, cache);
-                    cache.insert(target.to_owned(), result);
-                    total_count += cache.get(target).unwrap();
-                }
-            }
-            cache.insert(target.to_owned(), total_count);
-            total_count
+    for word in word_bank.iter() {
+        if target.starts_with(word) {
+            let remainder = &target[word.len()..target.len()];
+            let result = memoize(cache, count_construct, remainder, word_bank);
+            total_count += result;
         }
     }
+    total_count
 }
 
 #[cfg(test)]
@@ -35,18 +29,18 @@ mod tests {
 
     #[test]
     fn count_construct_short_string() {
-        let memo = &mut HashMap::new();
-        let result = count_construct("purple", &vec!["purp", "p", "ur", "le", "purpl"], memo);
-        assert_eq!(result, 2)
+        let cache = &mut HashMap::new();
+        let result = count_construct(cache, "purple", &vec!["purp", "p", "ur", "le", "purpl"]);
+        assert_eq!(result, 2, "result: {}", result);
     }
     #[test]
     fn count_construct_long_string() {
-        let memo = &mut HashMap::new();
+        let cache = &mut HashMap::new();
         let result = count_construct(
+            cache,
             "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeef",
             &vec!["e", "ee", "eee", "eeee", "eeeee"],
-            memo,
         );
-        assert_eq!(result, 0)
+        assert_eq!(result, 0, "result: {}", result)
     }
 }

@@ -1,9 +1,14 @@
 use std::collections::HashMap;
 
+use crate::memoize::memoize;
+
+/**
+ * Return the shortest combination of numbers that add up to exactly the target sum.
+ */
 pub fn best_sum(
+    cache: &mut HashMap<i32, Option<Vec<i32>>>,
     target_sum: i32,
     numbers: &Vec<i32>,
-    cache: &mut HashMap<i32, Option<Vec<i32>>>,
 ) -> Option<Vec<i32>> {
     if target_sum == 0 {
         return Some(vec![]);
@@ -14,29 +19,23 @@ pub fn best_sum(
 
     let mut shortest_combination: Option<Vec<i32>> = None;
 
-    match cache.get(&target_sum).cloned() {
-        Some(x) => x,
-        None => {
-            for num in numbers.iter() {
-                let remainder: i32 = target_sum - num;
-                let remainder_combination = best_sum(remainder, numbers, cache);
-                if let Some(mut combination) = remainder_combination {
-                    combination.push(*num);
-                    cache.insert(target_sum, Some(combination.clone()));
-                    match shortest_combination {
-                        Some(shortest) if combination.len() < shortest.len() => {
-                            shortest_combination = Some(combination);
-                        }
-                        None => {
-                            shortest_combination = Some(combination);
-                        }
-                        _ => {}
-                    }
+    for num in numbers.iter() {
+        let remainder: i32 = target_sum - num;
+        let remainder_combination = memoize(cache, best_sum, remainder, numbers);
+        if let Some(mut combination) = remainder_combination {
+            combination.push(*num);
+            match shortest_combination {
+                Some(shortest) if combination.len() < shortest.len() => {
+                    shortest_combination = Some(combination);
                 }
+                None => {
+                    shortest_combination = Some(combination);
+                }
+                _ => {}
             }
-            shortest_combination
         }
     }
+    shortest_combination
 }
 
 #[cfg(test)]
@@ -45,8 +44,8 @@ mod tests {
     use std::collections::HashMap;
     #[test]
     fn best_sum_seven() {
-        let memo = &mut HashMap::new();
-        let result = best_sum(7, &vec![5, 3, 4, 7], memo);
+        let cache = &mut HashMap::new();
+        let result = best_sum(cache, 7, &vec![5, 2, 3, 4, 7]);
         let expected_result = Some(vec![7]);
         assert!(
             result.iter().zip(&expected_result).all(|(a, b)| a == b),
@@ -58,8 +57,8 @@ mod tests {
 
     #[test]
     fn best_sum_one_hundred() {
-        let memo = &mut HashMap::new();
-        let result = best_sum(100, &vec![1, 2, 5, 25], memo);
+        let cache = &mut HashMap::new();
+        let result = best_sum(cache, 100, &vec![1, 2, 5, 25]);
         let expected_result = Some(vec![25, 25, 25, 25]);
         assert!(
             result.iter().zip(&expected_result).all(|(a, b)| a == b),

@@ -13,3 +13,8 @@ The following are some algorithms that implement the dynamic programming techniq
 * howcansum.rs: Given an array of numbers and a target sum, return an array containing any combination of elements that add up to exactly the target sum.
 
 All of them implement memoization in order to improve the performance of the algorithms.
+
+## How to execute test
+```bash
+cargo test
+```
