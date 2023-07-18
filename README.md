@@ -6,7 +6,7 @@ The following are some algorithms that implement the dynamic programming techniq
 
 - cansum.rs: Given an array of numbers and a target sum, return true if any combination of numbers in the array can add up to exactly the target sum.
 
-- countconstruct.rs: Given a target string and an array of strings, return the number of ways that the target can be constructed by concatenating elements of the array.
+- countconstruct.rs: Given a target string and an array of strings, return the number of ways that the target can be constructed by concatenating elements of the array. Memoization and tabulation implementations.
 
 - gridtraveler.rs: Given a grid of size m \* n, return the number of ways you can travel from the top-left to the bottom-right of the grid. Memoization and tabulation implementations.
 
