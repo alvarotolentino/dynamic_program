@@ -2,7 +2,7 @@
 
 The following are some algorithms that implement the dynamic programming technique (memoization and tabulation).
 
-- bestsum.rs: Given an array of numbers and a target sum, return the shortest combination of numbers that add up to exactly the target sum.
+- bestsum.rs: Given an array of numbers and a target sum, return the shortest combination of numbers that add up to exactly the target sum. Memoization and tabulation implementations.
 
 - cansum.rs: Given an array of numbers and a target sum, return true if any combination of numbers in the array can add up to exactly the target sum.
 
@@ -10,7 +10,7 @@ The following are some algorithms that implement the dynamic programming techniq
 
 - gridtraveler.rs: Given a grid of size m \* n, return the number of ways you can travel from the top-left to the bottom-right of the grid. Memoization and tabulation implementations.
 
-- howcansum.rs: Given an array of numbers and a target sum, return an array containing any combination of elements that add up to exactly the target sum.
+- howcansum.rs: Given an array of numbers and a target sum, return an array containing any combination of elements that add up to exactly the target sum. Memoization and tabulation implementations.
 
 - allconstruct.rs: Given a target string and an array of strings, return a 2D array containing all of the ways that the target can be constructed by concatenating elements of the array.
 
