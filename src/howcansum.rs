@@ -39,18 +39,22 @@ pub fn how_can_sum_tab<'a>(target_sum: usize, numbers: &Vec<usize>) -> Option<Ve
     let mut table: Vec<Option<Vec<usize>>> = vec![None; target_sum + 1];
     table[0] = Some(vec![]);
     for i in 0..=target_sum {
-        if let Some(x) = table[i].clone() {
-            for num in numbers {
-                if i + num <= target_sum {
-                    let mut new_vec = x.clone();
-                    new_vec.push(*num);
-                    table[i + num] = Some(new_vec);
+        let node = std::mem::take(&mut table[i]);
+        match node {
+            Some(mut x) => {
+                for num in numbers {
+                    if i + num <= target_sum {
+                        let mut new_vec = std::mem::take(&mut x);
+                        new_vec.push(*num);
+                        _ = std::mem::replace(&mut table[i + num], Some(new_vec));
+                    }
                 }
             }
+            None => continue,
         }
     }
 
-    table[target_sum].clone()
+    std::mem::take(&mut table[target_sum])
 }
 
 #[cfg(test)]

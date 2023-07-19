@@ -46,27 +46,34 @@ pub fn best_sum_tab(target_sum: usize, numbers: &Vec<usize>) -> Option<Vec<usize
     table[0] = Some(vec![]);
 
     for i in 0..target_sum {
-        if let Some(x) = table[i].clone() {
-            for num in numbers {
-                if i + num <= target_sum {
-                    let mut new_vec = x.clone();
-                    new_vec.push(*num);
-                    
-                    match table[i + num].clone() {
-                        Some(vec) if vec.len() > new_vec.len() => {
-                            table[i + num] = Some(new_vec);
+        let node = std::mem::take(&mut table[i]);
+        match node {
+            Some(mut x) => {
+                for num in numbers {
+                    if i + num <= target_sum {
+                        let mut new_node = std::mem::take(&mut table[i + num]);
+                        let mut new_vec = std::mem::take(&mut x);
+                        new_vec.push(*num);
+
+                        match new_node {
+                            Some(vec) if vec.len() > new_vec.len() => {
+                                new_node = Some(new_vec);
+                            }
+                            None => {
+                                new_node = Some(new_vec);
+                            }
+                            _ => {}
                         }
-                        None => {
-                            table[i + num] = Some(new_vec);
-                        }
-                        _ => {}
+
+                        _ = std::mem::replace(&mut table[i + num], new_node);
                     }
                 }
             }
+            None => continue,
         }
     }
 
-    table[target_sum].clone()
+    std::mem::take(&mut table[target_sum])
 }
 
 #[cfg(test)]
