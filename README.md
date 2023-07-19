@@ -12,7 +12,7 @@ The following are some algorithms that implement the dynamic programming techniq
 
 - howcansum.rs: Given an array of numbers and a target sum, return an array containing any combination of elements that add up to exactly the target sum. Memoization and tabulation implementations.
 
-- allconstruct.rs: Given a target string and an array of strings, return a 2D array containing all of the ways that the target can be constructed by concatenating elements of the array.
+- allconstruct.rs: Given a target string and an array of strings, return a 2D array containing all of the ways that the target can be constructed by concatenating elements of the array. Memoization and tabulation implementations.
 
 - fibonacci.rs: Given a number n, return the nth number of the Fibonacci sequence using tabulation.
 
